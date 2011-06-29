@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wikipédia</string>
+    <string name="bookmarks">Favoris</string>
+    <string name="add_bookmark">Ajouter aux favoris</string>
+    <string name="delete">Supprimer</string>
+    <string name="home">Accueil</string>
+    <string name="language">Langue</string>
+    <string name="language_summary">Quel Wikipédia utiliser</string>
+    <string name="loading">Chargement...</string>
+    <string name="preferences">Paramètres</string>
+    <string name="random">Au hasard</string>
+    <string name="refresh">Actualiser</string>
+    <string name="search">Rechercher</string>
+    <string name="search_description">Wikipédia</string>
+    <string name="search_hint">Rechercher dans Wikipédia</string>
+    <string name="share">Partager</string>
+    <string name="share_text">Je vous invite à lire cet article</string>
+    <string name="view">Voir</string>
+</resources>

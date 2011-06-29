@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages_preferences">
+        <item>العربية</item>
+        <item>Català</item>
+        <item>Česky</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Esperanto</item>
+        <item>Français</item>
+        <item>한국어</item>
+        <item>Bahasa Indonesia</item>
+        <item>Italiano</item>
+        <item>עברית</item>
+        <item>Lietuvių</item>
+        <item>Magyar</item>
+        <item>Nederlands</item>
+        <item>日本語</item>
+        <item>Norsk (bokmål)</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский</item>
+        <item>Slovenčina</item>
+        <item>Српски / Srpski</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Українська</item>
+        <item>Tiếng Việt</item>
+        <item>Volapük</item>
+        <item>中文</item>
+    </string-array>
+    <string-array name="languages_values_preferences">
+        <item>ar</item>
+        <item>ca</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>eo</item>
+        <item>fr</item>
+        <item>ko</item>
+        <item>id</item>
+        <item>it</item>
+        <item>he</item>
+        <item>lt</item>
+        <item>hu</item>
+        <item>nl</item>
+        <item>ja</item>
+        <item>no</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>sr</item>
+        <item>fi</item>
+        <item>sv</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>vi</item>
+        <item>vo</item>
+        <item>zh</item>
+    </string-array>
+</resources>

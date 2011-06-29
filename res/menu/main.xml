@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_connected" android:visible="false">
+    	<item android:id="@+id/menu_home" android:icon="@drawable/ic_menu_home" android:title="@string/home"></item>
+    	<item android:id="@+id/menu_random" android:icon="@drawable/ic_menu_chat_dashboard" android:title="@string/random"></item>
+    	<item android:id="@+id/menu_search" android:title="@string/search" android:icon="@drawable/ic_menu_search"></item>
+    </group>
+    <group android:id="@+id/group_page" android:visible="false">
+    	<item android:id="@+id/menu_add_bookmark" android:title="@string/add_bookmark" android:icon="@drawable/ic_menu_add_bookmark"></item>
+    	<item android:id="@+id/menu_share" android:icon="@drawable/ic_menu_share" android:title="@string/share"></item>
+    	<item android:id="@+id/menu_refresh" android:icon="@drawable/ic_menu_refresh" android:title="@string/refresh"></item>
+    </group>
+    <item android:id="@+id/menu_bookmarks" android:title="@string/bookmarks" android:icon="@drawable/ic_menu_bookmarks" ></item>
+    <item android:id="@+id/menu_preferences" android:icon="@drawable/ic_menu_preferences" android:title="@string/preferences" ></item>
+    
+</menu>

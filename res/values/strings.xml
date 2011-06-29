@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wikipedia</string>
+    <string name="bookmarks">bookmarks</string>
+    <string name="add_bookmark">Add bookmark</string>
+    <string name="delete">Delete</string>
+    <string name="home">Home</string>
+    <string name="language">Language</string>
+    <string name="language_summary">Choose the language of Wikipedia.</string>
+    <string name="loading">Loading. Please wait...</string>
+    <string name="preferences">Preferences</string>
+    <string name="random">Random</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
+    <string name="search_description">Wikipedia</string>
+    <string name="search_hint">Search Wikipedia</string>
+    <string name="share">Share</string>
+    <string name="share_text">I invite you to read this article</string>
+    <string name="view">View</string>
+</resources>
