@@ -26,6 +26,16 @@ public final class Main extends Activity {
     protected String lang;
     protected Intent intent;
 
+    protected boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return false;
+        } else {
+            State networkState = networkInfo.getState();
+            return (networkState.compareTo(State.CONNECTED) == 0);
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,70 +48,62 @@ public final class Main extends Activity {
         this.lang = Api.lang;
         Api.wiki = "wikipedia.org";
         final Main activity = this;
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null) {
-            Api.isConnected = false;
-        } else {
-            State networkState = networkInfo.getState();
-            Api.isConnected = (networkState.compareTo(State.CONNECTED) == 0);
+        Api.isConnected = this.isConnected();
+        if (Intent.ACTION_SEARCH.equals(this.intent.getAction())) {
+            this.url = "wiki?search=" + intent.getStringExtra(SearchManager.QUERY);
+        } else if (Intent.ACTION_VIEW.equals(this.intent.getAction())) {
+            this.url = intent.getData().getPath();
+            this.lang = intent.getData().getAuthority().split("\\.")[0];
         }
 
-        if (Api.isConnected) {
-            if (Intent.ACTION_SEARCH.equals(this.intent.getAction())) {
-                this.url = "wiki?search=" + intent.getStringExtra(SearchManager.QUERY);
-            } else if (Intent.ACTION_VIEW.equals(this.intent.getAction())) {
-                this.url = intent.getData().getPath();
-                this.lang = intent.getData().getAuthority().split("\\.")[0];
+        WebSettings webSettings = this.view.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        this.view.setWebViewClient(new WebViewClient() {
+            public ProgressDialog progressDialog;
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(Uri.parse(url).getHost().contains("." + Api.wiki)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url), activity, Main.class);
+                    startActivity(intent);
+                    return true;
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
             }
-            
-            WebSettings webSettings = this.view.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            webSettings.setBuiltInZoomControls(true);
 
-            this.view.setWebViewClient(new WebViewClient() {
-                public ProgressDialog progressDialog;
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                try {
+    				activity.view.loadData(Api.getContent(getResources().openRawResource(R.raw.noresult)), "text/html", "utf-8");
+    			} catch (Exception e) {
+    				activity.view.loadData("Error !", "text/html", "utf-8");
+    			}
+            }
 
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if(Uri.parse(url).getHost().contains("." + Api.wiki)) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url), activity, Main.class);
-                        startActivity(intent);
-                        return true;
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                        return true;
-                    }
-                }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                this.progressDialog = ProgressDialog.show(activity, "", getResources().getText(R.string.loading), true);
+            }
 
-                @Override
-                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    try {
-        				activity.view.loadData(Api.getContent(getResources().openRawResource(R.raw.noresult)), "text/html", "utf-8");
-        			} catch (Exception e) {
-        				activity.view.loadData("Error !", "text/html", "utf-8");
-        			}
-                }
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                activity.setTitle(activity.view.getTitle());
+                view.loadUrl("javascript:" +
+                    "$('#searchbox').remove();" +
+                    "$('#nav').remove();" +
+                    "$('#footmenu').remove();"
+                );
+                this.progressDialog.dismiss();
+            }
+        });
 
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    this.progressDialog = ProgressDialog.show(activity, "", getResources().getText(R.string.loading), true);
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    activity.setTitle(activity.view.getTitle());
-                    view.loadUrl("javascript:" +
-                        "$('#searchbox').remove();" +
-                        "$('#nav').remove();" +
-                        "$('#footmenu').remove();"
-                    );
-                    this.progressDialog.dismiss();
-                }
-            });
-
-            this.view.loadUrl("http://" + this.lang + ".m." + Api.wiki + "/" + url);
+        if (Api.isConnected) {
+           this.view.loadUrl("http://" + this.lang + ".m." + Api.wiki + "/" + url);
         } else {
             try {
 				this.view.loadData(Api.getContent(getResources().openRawResource(R.raw.noresult)), "text/html", "utf-8");
@@ -112,10 +114,21 @@ public final class Main extends Activity {
     }
 
     @Override
+    public void onRestart() {
+    	super.onRestart();
+    	if(!Api.isConnected) {
+            Api.isConnected = this.isConnected();
+            if(Api.isConnected) {
+            	this.view.loadUrl("http://" + this.lang + ".m." + Api.wiki + "/" + url);
+            }
+    	}
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        if (Api.isConnected) {
+        if(Api.isConnected) {
             menu.setGroupVisible(R.id.group_connected, true);
             menu.setGroupVisible(R.id.group_page, true);
         }
@@ -150,9 +163,9 @@ public final class Main extends Activity {
                 this.view.reload();
                 return true;
             case R.id.menu_share:
-                intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("plain/text");
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, this.getString(R.string.share_text) + " " + Api.getUrl(this.url));
+                intent.putExtra(Intent.EXTRA_TEXT, this.getString(R.string.share_text) + " " + Api.getUrl(this.url));
                 this.startActivity(Intent.createChooser(intent, this.getString(R.string.share)));
                 return true;
             case R.id.menu_bookmarks:
