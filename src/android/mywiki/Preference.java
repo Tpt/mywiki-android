@@ -19,10 +19,17 @@ public class Preference extends PreferenceActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        if (Api.isConnected) {
-            menu.setGroupVisible(R.id.group_connected, true);
-        }
         menu.findItem(R.id.menu_preferences).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(Api.isConnected) {
+        	 menu.setGroupVisible(R.id.group_connected, true);
+        } else {
+        	 menu.setGroupVisible(R.id.group_connected, false);
+        }
         return true;
     }
 
