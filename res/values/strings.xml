@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wikipedia</string>
+    <string name="app_name">myWiki</string>
     <string name="bookmarks">bookmarks</string>
     <string name="add_bookmark">Add bookmark</string>
     <string name="delete">Delete</string>
